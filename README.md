@@ -891,9 +891,9 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 | Service | URL |
 |---------|-----|
-| Frontend | `https://<YOUR_VERCEL_DOMAIN>` |
-| Backend | `http://<YOUR_EC2_PUBLIC_IP>:5000` |
-| API Base | `http://<YOUR_EC2_PUBLIC_IP>:5000/api` |
+| Live Frontend Dashboard (Vercel) | [https://instant-mechanic-dashboard-mu.vercel.app](https://instant-mechanic-dashboard-mu.vercel.app) |
+| Backend REST API (AWS EC2)| [http://16.171.139.19:5000/api/dashboard/overview](http://16.171.139.19:5000/api/dashboard/overview) |
+| GitHub Repository| [https://github.com/ImTusharr/instant-mechanic-dashboard](https://github.com/ImTusharr/instant-mechanic-dashboard)|
 
 ---
 
