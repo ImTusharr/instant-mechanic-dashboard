@@ -1,540 +1,449 @@
-🛠️ Instant Mechanic — Operations Command Center
+# 🛠️ Instant Mechanic — Operations Command Center
 
-A dynamic, real-time operations dashboard built to streamline vehicle repair request tracking, mechanic fleet dispatching, customer acquisition analytics, and revenue management.
+> A dynamic, real-time operations dashboard for mechanic fleet management, booking tracking, and revenue analytics.
 
-📖 Project Overview
+**[Live Demo](#-production-deployment-links)** • **[Documentation](#-api-documentation)** • **[Report Bug](https://github.com/ImTusharr/instant-mechanic-dashboard/issues)** • **[Request Feature](https://github.com/ImTusharr/instant-mechanic-dashboard/issues)**
+
+[![Node](https://img.shields.io/badge/Node-16+-green?logo=node.js&style=for-the-badge)](https://nodejs.org/)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue?logo=python&style=for-the-badge)](https://www.python.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker&style=for-the-badge)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-ImTusharr-black?logo=github&style=for-the-badge)](https://github.com/ImTusharr)
 
-What We Built
+---
+
+## 📖 Table of Contents
+
+- [Overview](#-project-overview)
+- [Features](#-main-features)
+- [Tech Stack](#️-tech-stack)
+- [Quick Stats](#-quick-stats)
+- [Architecture](#-architecture)
+- [Prerequisites](#-prerequisites)
+- [Local Setup](#-local-setup)
+- [API Documentation](#-api-documentation)
+- [Deployment](#-deployment)
+- [Troubleshooting](#-troubleshooting)
+- [AI Usage](#-ai-usage)
+- [Testing](#-testing)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
 
-Instant Mechanic — Operations Command Center is a Single-Page Application (SPA) designed to provide a centralized view of mechanic operations.
+## 📊 Quick Stats
 
-The dashboard dynamically displays important operational information such as:
+| Feature | Details |
+|---------|---------|
+| 🎨 **Frontend** | React 18 + Vite + Tailwind CSS |
+| 🔧 **Backend** | Python Flask + SQLAlchemy ORM |
+| 💾 **Database** | SQLite with historical records |
+| ☁️ **Hosting** | Vercel (Frontend) + AWS EC2 (Backend) |
+| 🔄 **Real-time** | Server-Sent Events (SSE) |
+| 📱 **Design** | Glassmorphism dark theme |
+| 🐳 **Containerization** | Docker support |
 
-Total Revenue
+---
 
-Lifetime Bookings
+## 📖 Project Overview
 
-Completed Bookings
+### What We Built
 
-Pending Bookings
+**Instant Mechanic — Operations Command Center** is a Single-Page Application (SPA) designed to provide a **centralized command center** for mechanic service operations.
 
-Cancelled Bookings
+The dashboard dynamically displays critical operational metrics:
 
-Active Mechanics
-
-New Customers
-
-Booking Status Distribution
-
-Paginated Booking History
-
-Real-time Dispatch Updates
-
-The application retrieves data from the backend API and calculates dashboard metrics dynamically from database records.
-
-Why We Built It
-
-Traditional mechanic operations may depend on static records, spreadsheets, or manually refreshed dashboards. This can make it difficult to monitor bookings, mechanic availability, and revenue in real time.
-
-The purpose of this project is to provide a centralized operations command center where important business information can be viewed through an interactive dashboard.
-
-The system combines a React frontend, Flask backend, SQLite database, and Server-Sent Events (SSE) to provide dynamic data and real-time operational updates.
-
-🛠️ Tech Stack
-
-Frontend
-
-React
-
-Vite
-
-Tailwind CSS
-
-JavaScript
-
-Server-Sent Events (SSE) Client
-
-Responsive UI
-
-Glassmorphism-based dark dashboard design
-
-Backend
-
-Python
-
-Flask
-
-Flask-SQLAlchemy
-
-REST API
-
-Server-Sent Events (SSE)
-
-Database
-
-SQLite
-
-Flask-SQLAlchemy ORM
-
-Pre-seeded historical operational records
-
-Infrastructure
-
-Docker
-
-AWS EC2
-
-Ubuntu 22.04 LTS
-
-Vercel
-
-Development Tools
-
-Git
-
-GitHub
-
-npm
-
-Python Virtual Environment
-
-Docker Engine
-
-🏗️ Architecture
-
-The application follows a simple:
-
-Frontend → API → Backend → Database
-
-architecture.
-
-                    ┌─────────────────────────┐
-                    │      React Frontend     │
-                    │       Vite + Tailwind   │
-                    │      Hosted on Vercel   │
-                    └────────────┬────────────┘
-                                 │
-                                 │ HTTPS
-                                 ▼
-                    ┌─────────────────────────┐
-                    │     Vercel API Proxy    │
-                    │      /api/* Rewrite     │
-                    └────────────┬────────────┘
-                                 │
-                                 │ HTTP Request
-                                 ▼
-                    ┌─────────────────────────┐
-                    │      Flask Backend      │
-                    │       REST API + SSE    │
-                    │      Docker / EC2       │
-                    └────────────┬────────────┘
-                                 │
-                                 │ SQL / ORM
-                                 ▼
-                    ┌─────────────────────────┐
-                    │       SQLite DB         │
-                    │   Historical Records    │
-                    └─────────────────────────┘
-
-🔄 Data Flow
-
-1. Frontend
-
-The React application loads the dashboard and sends asynchronous API requests to the backend.
-
-For example:
-
-GET /api/dashboard/overview
-
-The frontend receives the JSON response and updates the dashboard KPIs dynamically.
-
-2. API Proxy
-
-In production, the frontend uses the /api path.
-
-Vercel rewrites these requests and forwards them to the Flask backend running on AWS EC2.
-
-This allows the frontend to communicate through HTTPS without directly making browser requests from HTTPS to an HTTP backend.
-
-3. Backend
-
-The Flask backend receives API requests and performs the required database operations.
-
-Flask-SQLAlchemy is used to interact with the SQLite database.
-
-The backend calculates operational metrics such as:
-
-Revenue
-
-Booking counts
-
-Booking statuses
-
-Active mechanics
-
-New customers
-
-The resulting information is returned to the frontend as JSON.
-
-4. Database
-
-SQLite stores the operational data required by the application.
-
-The database contains records related to:
-
-Customers
-
-Bookings
-
-Repair statuses
-
-Mechanics
-
-Revenue information
-
-Historical operational records
-
-5. Real-Time Updates
-
-The backend also provides a Server-Sent Events endpoint:
-
-GET /api/stream
-
-The frontend can establish an SSE connection and receive operational updates without requiring a complete page refresh.
-
-✨ Main Features
-
-📊 Dynamic Dashboard KPIs
-
-The dashboard dynamically displays important operational metrics including:
-
-Total Revenue
-
-Total Bookings
-
-Completed Bookings
-
-Pending Bookings
-
-Cancelled Bookings
-
-Active Mechanics
-
-New Customers
-
-These values are retrieved from the backend instead of being hard-coded in the frontend.
-
-📈 Booking Status Distribution
-
-The dashboard provides a visual representation of booking statuses.
-
-Example statuses include:
-
-Completed
-Pending
-Cancelled
-
-The values are calculated from the database records.
-
-📋 Booking History
-
-The dashboard includes a booking history section that displays repair requests.
-
-Each booking can contain information such as:
-
-Booking ID
-
-Customer
-
-Booking Status
-
-Amount
-
-The booking list supports pagination so that large numbers of records can be displayed efficiently.
-
-🚗 Mechanic Fleet Information
-
-The dashboard provides information about mechanic availability and active mechanics.
-
-This allows operations teams to quickly understand the current mechanic fleet status.
-
-⚡ Real-Time Event Streaming
-
-The application uses Server-Sent Events (SSE) to support real-time updates.
-
-The frontend connects to:
-
-GET /api/stream
-
-The backend maintains the event stream and can send operational updates to connected clients.
-
-🌙 Dashboard UI
-
-The frontend uses a dark operations-center style interface with:
-
-Tailwind CSS
-
-Glassmorphism elements
-
-Zinc-based dark surfaces
-
-Amber highlights
-
-Responsive layouts
-
-KPI cards
-
-Status indicators
-
-Data tables
-
-Interactive dashboard components
-
-📁 Project Structure
-
-A simplified project structure is shown below:
-
+- 💰 **Total Revenue** — Real-time revenue tracking
+- 📊 **Booking Analytics** — Comprehensive booking statistics
+  - Total Bookings
+  - Completed Bookings
+  - Pending Bookings
+  - Cancelled Bookings
+- 🚗 **Fleet Management** — Active mechanics count
+- 👥 **Customer Acquisition** — New customer tracking
+- 📈 **Status Distribution** — Visual booking status breakdown
+- 📋 **Paginated History** — Efficient booking record browsing
+- ⚡ **Real-time Updates** — Live dispatch and operational events
+
+### Why We Built It
+
+Traditional mechanic operations rely on **static spreadsheets and manually refreshed dashboards**, making it difficult to:
+
+- ❌ Monitor real-time booking status
+- ❌ Track mechanic availability
+- ❌ Analyze revenue trends
+- ❌ Manage customer acquisition
+
+**Instant Mechanic solves this** by combining:
+- **React Frontend** — Interactive, responsive UI
+- **Flask Backend** — RESTful API with real-time SSE
+- **SQLite Database** — Reliable data persistence
+- **Docker + AWS** — Scalable cloud deployment
+
+---
+
+## ✨ Main Features
+
+- 📊 **Dynamic Dashboard KPIs** — Real-time metrics for revenue, bookings, and mechanic status
+- 📈 **Booking Analytics** — Visual status distribution and historical data
+- 📋 **Paginated History** — Efficiently browse large booking datasets
+- 🚗 **Fleet Management** — Track active mechanics and availability at a glance
+- ⚡ **Real-Time Events** — Server-Sent Events for instant operational updates
+- 🌙 **Dark Mode UI** — Professional glassmorphism design
+- 📱 **Responsive Design** — Seamless experience on desktop and mobile
+- 🔒 **Secure Deployment** — Environment-based configuration & security best practices
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **React 18** — Modern UI library with hooks
+- **Vite** — Lightning-fast build tool & dev server
+- **Tailwind CSS** — Utility-first styling
+- **JavaScript (ES6+)** — Modern JavaScript features
+- **SSE Client** — Real-time event listening
+- **Responsive Design** — Mobile-first approach
+- **Glassmorphism UI** — Modern dark dashboard aesthetic
+
+### Backend
+
+- **Python 3.8+** — Production-ready language
+- **Flask** — Lightweight, flexible web framework
+- **Flask-SQLAlchemy** — ORM for database operations
+- **REST API** — RESTful endpoint design
+- **Server-Sent Events (SSE)** — Real-time data streaming
+- **CORS Support** — Cross-origin request handling
+
+### Database
+
+- **SQLite** — Reliable, serverless database
+- **Flask-SQLAlchemy ORM** — Type-safe database queries
+- **Pre-seeded Data** — Historical operational records
+
+### Infrastructure
+
+- **Docker** — Container orchestration
+- **AWS EC2** — Cloud compute (Ubuntu 22.04 LTS)
+- **Vercel** — Frontend hosting & API routing
+- **GitHub** — Version control & CI/CD
+
+### Development Tools
+
+- **Git** — Version control
+- **npm** — Package management
+- **Python venv** — Virtual environment
+- **Docker Engine** — Local containerization
+
+---
+
+## 🏗️ Architecture
+
+The application follows a clean **three-tier architecture**:
+
+```
+Frontend → API Gateway → Backend → Database
+```
+
+### Visual Architecture Diagram
+
+```
+┌───────────────────────────────────┐
+│    🎨 React Frontend              │
+│    (Vite + Tailwind CSS)          │
+│    Hosted on Vercel               │
+└─────────────────┬─────────────────┘
+                  │ HTTPS
+                  ▼
+┌───────────────────────────────────┐
+│  📡 Vercel API Proxy              │
+│  /api/* Rewrite to Backend        │
+└─────────────────┬─────────────────┘
+                  │ HTTP
+                  ▼
+┌───────────────────────────────────┐
+│  🔧 Flask Backend + SSE           │
+│  REST API + Real-time Events      │
+│  Docker Container / AWS EC2       │
+└─────────────────┬─────────────────┘
+                  │ SQL/ORM
+                  ▼
+┌───────────────────────────────────┐
+│  💾 SQLite Database               │
+│  Historical Operational Records   │
+└───────────────────────────────────┘
+```
+
+### Data Flow
+
+1. **Frontend** → React app sends API requests (e.g., `GET /api/dashboard/overview`)
+2. **API Proxy** → Vercel rewrites `/api/*` requests to AWS EC2 backend
+3. **Backend** → Flask processes request, queries SQLite database
+4. **Database** → SQLite returns operational metrics
+5. **Response** → JSON data flows back to frontend for dynamic rendering
+6. **Real-time** → SSE stream provides live updates without page refresh
+
+---
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** v16 or higher ([Download](https://nodejs.org/))
+- **Python** v3.8 or higher ([Download](https://www.python.org/))
+- **Git** ([Download](https://git-scm.com/))
+- **Docker** (optional, for containerized deployment) ([Download](https://www.docker.com/))
+
+Verify installation:
+
+```bash
+node --version    # v16+
+python --version  # 3.8+
+git --version
+docker --version  # optional
+```
+
+---
+
+## 📁 Project Structure
+
+```
 instant-mechanic-dashboard/
 │
-├── backend/
-│   ├── app.py
-│   ├── requirements.txt
-│   ├── Dockerfile
-│   ├── .env
-│   └── instance/
-│       └── mechanic.db
+├── 📂 backend/
+│   ├── app.py                 # Flask application
+│   ├── requirements.txt        # Python dependencies
+│   ├── Dockerfile             # Docker configuration
+│   ├── .env.example           # Environment variables template
+│   ├── .env                   # Environment config (git-ignored)
+│   └── 📂 instance/
+│       └── mechanic.db        # SQLite database
 │
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── App.jsx
-│   │   └── ...
+├── 📂 frontend/
+│   ├── 📂 src/
+│   │   ├── 📂 components/     # Reusable React components
+│   │   ├── 📂 pages/          # Page components
+│   │   ├── App.jsx            # Main app component
+│   │   ├── main.jsx           # Entry point
+│   │   └── App.css            # Global styles
 │   │
-│   ├── package.json
-│   ├── vite.config.js
-│   ├── .env
-│   └── ...
+│   ├── package.json           # npm dependencies
+│   ├── vite.config.js         # Vite configuration
+│   ├── tailwind.config.js     # Tailwind configuration
+│   ├── .env.example           # Environment variables template
+│   ├── .env                   # Environment config (git-ignored)
+│   └── index.html             # HTML entry point
 │
-├── vercel.json
-├── README.md
-└── .gitignore
+├── vercel.json                # Vercel deployment config
+├── README.md                  # This file
+├── .gitignore                 # Git ignore rules
+└── LICENSE                    # MIT License
+```
 
-The exact file structure may differ depending on the final implementation.
+---
 
-💻 Local Setup
+## 💻 Local Setup
 
-Follow the steps below to run the project locally.
+### 1️⃣ Clone the Repository
 
-1. Clone the Repository
-
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/instant-mechanic-dashboard.git
-
-Move into the project directory:
-
+```bash
+git clone https://github.com/ImTusharr/instant-mechanic-dashboard.git
 cd instant-mechanic-dashboard
+```
 
-🐍 Backend Setup
+### 🐍 Backend Setup
 
-Open a terminal and move to the backend directory:
+#### Step 1: Navigate to Backend
 
+```bash
 cd backend
+```
 
-2. Create a Python Virtual Environment
+#### Step 2: Create Python Virtual Environment
 
+**Windows (PowerShell):**
+```bash
 python -m venv venv
-
-Windows PowerShell
-
 venv\Scripts\activate
+```
 
-macOS / Linux
-
+**macOS / Linux:**
+```bash
+python3 -m venv venv
 source venv/bin/activate
+```
 
-3. Install Backend Dependencies
+#### Step 3: Install Dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-4. Configure Backend Environment
+#### Step 4: Configure Environment
 
-Create a .env file inside the backend directory.
+Create `backend/.env`:
 
-Example:
-
+```env
 PORT=5000
 FLASK_ENV=development
 DATABASE_URL=sqlite:///instance/mechanic.db
+```
 
-5. Start the Backend
+#### Step 5: Start Backend
 
+```bash
 python app.py
+```
 
-The backend should now be available at:
+✅ Backend ready at: `http://localhost:5000`
 
-http://localhost:5000
+---
 
-⚛️ Frontend Setup
+### ⚛️ Frontend Setup
 
-Open another terminal.
+#### Step 1: Navigate to Frontend (New Terminal)
 
-From the project root:
-
+```bash
 cd frontend
+```
 
-6. Install Frontend Dependencies
+#### Step 2: Install Dependencies
 
+```bash
 npm install
+```
 
-7. Configure Frontend Environment
+#### Step 3: Configure Environment
 
-Create a .env file inside the frontend directory.
+Create `frontend/.env`:
 
-For local development:
-
+**For Local Development:**
+```env
 VITE_API_BASE_URL=http://localhost:5000/api
+```
 
-If the project is configured to use a local Vite proxy, the value can instead be:
-
+**For Production (Vercel):**
+```env
 VITE_API_BASE_URL=/api
+```
 
-8. Start the Frontend
+#### Step 4: Start Frontend
 
+```bash
 npm run dev
+```
 
-The Vite development server will normally be available at:
+✅ Frontend ready at: `http://localhost:5173`
 
-http://localhost:5173
+Open your browser and navigate to the URL shown in the terminal.
 
-Open the URL in your browser to access the dashboard.
+---
 
-🐳 Running the Backend with Docker
+## 🐳 Running Backend with Docker
 
-The backend can also be run using Docker.
+### Build Docker Image
 
-Navigate to the backend directory:
-
+```bash
 cd backend
-
-Build the Docker image:
-
 docker build -t instant-mechanic-api .
+```
 
-Run the container:
+### Run Container
 
+```bash
 docker run -d \
   -p 5000:5000 \
   --name mechanic-api \
   instant-mechanic-api
+```
 
-The Flask API will then be accessible at:
+✅ API accessible at: `http://localhost:5000`
 
-http://localhost:5000
+### View Logs
 
-🔐 Environment Variables
+```bash
+docker logs mechanic-api
+```
 
-Backend
+### Stop Container
 
-Create:
+```bash
+docker stop mechanic-api
+docker rm mechanic-api
+```
 
-backend/.env
+---
 
-Variable
+## 🔐 Environment Variables
 
-Required
+### Backend Configuration
 
-Default
+**File:** `backend/.env`
 
-Description
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `PORT` | No | `5000` | Flask server port |
+| `FLASK_ENV` | No | `production` | Runtime environment (development/production) |
+| `DATABASE_URL` | No | `sqlite:///instance/mechanic.db` | Database connection string |
 
-PORT
-
-No
-
-5000
-
-Port on which the Flask server runs
-
-FLASK_ENV
-
-No
-
-production
-
-Flask runtime environment
-
-DATABASE_URL
-
-No
-
-sqlite:///instance/mechanic.db
-
-Database connection string
-
-Example:
-
+**Example:**
+```env
 PORT=5000
-FLASK_ENV=production
+FLASK_ENV=development
 DATABASE_URL=sqlite:///instance/mechanic.db
+```
 
-Frontend
+### Frontend Configuration
 
-Create:
+**File:** `frontend/.env`
 
-frontend/.env
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `VITE_API_BASE_URL` | Yes | `/api` | Backend API base URL |
 
-Variable
-
-Required
-
-Default
-
-Description
-
-VITE_API_BASE_URL
-
-Yes
-
-/api
-
-Base URL/path used by frontend API requests
-
-Example for production:
-
-VITE_API_BASE_URL=/api
-
-Example for local development:
-
+**Example (Local):**
+```env
 VITE_API_BASE_URL=http://localhost:5000/api
+```
 
-Do not commit .env files containing sensitive configuration or credentials to GitHub.
+**Example (Production):**
+```env
+VITE_API_BASE_URL=/api
+```
 
-📡 API Documentation
+### Security Best Practices
 
-Base API URL
+⚠️ **DO NOT commit `.env` files to GitHub!**
 
-Local
+- Use `.env.example` templates
+- Keep sensitive credentials local
+- Use GitHub Secrets for CI/CD pipelines
+- Rotate credentials regularly
 
-http://localhost:5000/api
+---
 
-Production
+## 📡 API Documentation
 
-/api
+### Base URLs
 
-The production frontend uses the Vercel reverse proxy to forward API requests to the backend running on AWS EC2.
+| Environment | URL |
+|-------------|-----|
+| **Local** | `http://localhost:5000/api` |
+| **Production** | `/api` (routed via Vercel) |
 
-1. Dashboard Overview
+---
 
-Endpoint
+### 1️⃣ Dashboard Overview
 
+Returns main operational metrics.
+
+```http
 GET /api/dashboard/overview
+```
 
-Description
-
-Returns the main operational dashboard metrics.
-
-Example Response
-
+**Response:**
+```json
 {
   "total_revenue": 102709.22,
   "total_bookings": 550,
@@ -544,289 +453,472 @@ Example Response
   "active_mechanics": 16,
   "new_customers": 33
 }
+```
 
-2. Bookings
+**Use Case:** Display KPI cards on dashboard homepage
 
-Endpoint
+---
 
-GET /api/bookings
+### 2️⃣ Bookings History
 
-Description
+Returns paginated booking records.
 
-Returns repair booking records used by the booking history section.
+```http
+GET /api/bookings?page=1&limit=10
+```
 
-Example Response
-
+**Response:**
+```json
 [
   {
     "id": 1,
     "customer": "John Doe",
     "status": "completed",
-    "amount": 150.00
+    "amount": 150.00,
+    "date": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "customer": "Jane Smith",
+    "status": "pending",
+    "amount": 200.00,
+    "date": "2024-01-16"
   }
 ]
+```
 
-The endpoint can be used by the frontend to populate the booking history table.
+**Use Case:** Populate booking history table with pagination
 
-3. Real-Time Stream
+---
 
-Endpoint
+### 3️⃣ Real-Time Stream
 
+Server-Sent Events endpoint for live updates.
+
+```http
 GET /api/stream
+```
 
-Description
+**Response Type:** `text/event-stream`
 
-Creates a Server-Sent Events connection for real-time operational or dispatch updates.
+**Example Event:**
+```
+data: {"type": "booking_updated", "booking_id": 42, "status": "completed"}
+```
 
-Response Type
+**Use Case:** Real-time dashboard updates without page refresh
 
-text/event-stream
+**Frontend Usage:**
+```javascript
+const eventSource = new EventSource('/api/stream');
+eventSource.addEventListener('message', (event) => {
+  const data = JSON.parse(event.data);
+  // Update dashboard with new data
+});
+```
 
-The frontend can listen to the stream and update the dashboard when new events are received.
+---
 
-🚀 Deployment
+## 🚀 Deployment
 
-The project uses separate hosting environments for the frontend and backend.
+The project uses a **hybrid deployment strategy** for optimal performance and cost efficiency.
 
-Frontend → Vercel
-Backend  → AWS EC2
-Database → SQLite
-Backend Runtime → Docker
+| Component | Hosting | Benefits |
+|-----------|---------|----------|
+| **Frontend** | Vercel | Fast CDN, auto-scaling, free tier |
+| **Backend** | AWS EC2 | Full control, flexible config, Docker support |
+| **Database** | SQLite (local) | Lightweight, no additional DB service needed |
 
-☁️ Backend Deployment — AWS EC2
+---
 
-The Flask backend is containerized using Docker and deployed to an AWS EC2 instance.
+### ☁️ Backend Deployment — AWS EC2
 
-Deployment Environment
+#### Environment
 
-AWS EC2
+- **Server:** AWS EC2 instance (Ubuntu 22.04 LTS)
+- **Runtime:** Docker container
+- **Database:** SQLite (in-container)
 
-Ubuntu 22.04 LTS
+#### Deployment Flow
 
-Docker Engine
-
-Flask API
-
-SQLite database
-
-General Deployment Flow
-
-Developer
-    │
-    ▼
+```
+Developer Push
+       ↓
 GitHub Repository
-    │
-    ▼
-AWS EC2
-    │
-    ▼
-Docker Image
-    │
-    ▼
-Flask Container
-    │
-    ▼
-SQLite Database
+       ↓
+Pull to EC2 Instance
+       ↓
+Build Docker Image
+       ↓
+Run Container
+       ↓
+Flask API Live
+```
+
+#### Deployment Steps
+
+1. **SSH into EC2 instance:**
+```bash
+ssh -i your-key.pem ubuntu@your-ec2-ip
+```
+
+2. **Clone repository:**
+```bash
+git clone https://github.com/ImTusharr/instant-mechanic-dashboard.git
+cd instant-mechanic-dashboard/backend
+```
+
+3. **Build & run Docker:**
+```bash
+docker build -t instant-mechanic-api .
+docker run -d -p 5000:5000 --name mechanic-api instant-mechanic-api
+```
+
+4. **Configure Security Group:**
+   - Allow inbound traffic on port 5000
+   - Restrict to Vercel IP range if possible
+
+---
+
+### ▲ Frontend Deployment — Vercel
+
+#### Environment
+
+- **Hosting:** Vercel global CDN
+- **Framework:** React + Vite
+- **API Routing:** Vercel reverse proxy
+
+#### Configuration File: `vercel.json`
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "http://your-ec2-ip:5000/api/$1"
+    }
+  ]
+}
+```
+
+#### Deployment Steps
+
+1. **Connect GitHub repository to Vercel**
+   - Visit [vercel.com](https://vercel.com)
+   - Import project from GitHub
+   - Authorize and connect
+
+2. **Configure Environment:**
+   - Add `VITE_API_BASE_URL=/api` to Vercel project settings
+   - Update `vercel.json` with actual EC2 IP
+
+3. **Deploy:**
+   - Push to main branch
+   - Vercel auto-deploys on push
+
+#### API Routing Example
+
+```
+Browser Request
+    ↓
+https://your-app.vercel.app/api/dashboard/overview
+    ↓
+Vercel Proxy (via vercel.json)
+    ↓
+http://your-ec2-ip:5000/api/dashboard/overview
+    ↓
+Flask Backend
+    ↓
+Response back to Browser
+```
+
+---
 
-The EC2 security configuration allows the required application traffic to reach the backend.
+## 🔒 Security Considerations
+
+✅ **Best Practices Implemented:**
+
+- ✔️ Environment variables for sensitive configuration
+- ✔️ `.env` files excluded from version control
+- ✔️ API requests routed through Vercel proxy (HTTPS)
+- ✔️ Backend containerized with Docker
+- ✔️ AWS Security Group restricts port access
+- ✔️ CORS configured for frontend domain
+- ✔️ Database backup strategies recommended
 
-▲ Frontend Deployment — Vercel
+⚠️ **Security Checklist:**
 
-The React/Vite frontend is deployed using Vercel.
+- [ ] Update EC2 Security Group rules
+- [ ] Use HTTPS for all API calls
+- [ ] Rotate AWS credentials regularly
+- [ ] Enable EC2 CloudWatch monitoring
+- [ ] Configure VPC security groups
+- [ ] Use secrets management for credentials
+- [ ] Enable API rate limiting (production)
+- [ ] Implement authentication (future)
 
-The frontend is configured to use /api for API requests.
+---
 
-Vercel rewrites these requests to the backend API running on AWS EC2.
+## 🐛 Troubleshooting
 
-Example:
+### Frontend Issues
 
-Browser
-   │
-   │ HTTPS
-   ▼
-Vercel
-   │
-   │ /api/*
-   ▼
-AWS EC2
-   │
-   ▼
-Flask API
+#### **Problem:** Frontend not connecting to backend
 
-This reverse-proxy approach allows the frontend to communicate through the Vercel domain instead of directly making browser requests from HTTPS to an HTTP backend.
+**Solution:**
+```bash
+# 1. Check .env file
+cat frontend/.env
 
-🔁 Vercel API Rewrite
+# 2. Verify VITE_API_BASE_URL
+# For local: http://localhost:5000/api
+# For production: /api
 
-The project uses a vercel.json configuration for API routing.
+# 3. Check backend is running
+curl http://localhost:5000/api/dashboard/overview
+```
 
-Conceptually, requests follow:
+#### **Problem:** CORS error in browser console
 
-/api/*
-      ↓
-AWS EC2 Backend
-      ↓
-/api/*
+**Solution:**
+```python
+# backend/app.py - Add CORS support
+from flask_cors import CORS
 
-The actual EC2 address should be configured according to the deployment environment rather than committed as a sensitive or changeable value.
+app = Flask(__name__)
+CORS(app)
+```
 
-🔒 Security Considerations
+#### **Problem:** npm install fails
 
-The project follows several basic deployment practices:
+**Solution:**
+```bash
+# Clear npm cache
+npm cache clean --force
 
-Environment variables are used for configurable values.
+# Reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
 
-.env files should not be committed to the repository.
+---
 
-API requests are routed through the Vercel /api path in production.
+### Backend Issues
 
-The backend is containerized using Docker.
+#### **Problem:** Backend won't start (Port already in use)
 
-AWS Security Group rules should expose only the ports required by the application.
+**Solution:**
+```bash
+# Check what's using port 5000
+lsof -i :5000
 
-Production credentials and private configuration should remain outside the source repository.
+# Kill the process
+kill -9 <PID>
 
-🤖 AI Usage
+# Or use different port
+PORT=5001 python app.py
+```
 
-AI tools such as ChatGPT and Gemini were used as development assistants during the project.
+#### **Problem:** Database connection error
 
-AI assistance was mainly used for:
+**Solution:**
+```bash
+# Verify database file exists
+ls -la backend/instance/mechanic.db
 
-Architecture
+# Reset database
+rm backend/instance/mechanic.db
+python backend/app.py  # Recreates database
+```
 
-Understanding and structuring the frontend/backend architecture.
+#### **Problem:** Import errors in Flask
 
-Designing the Vercel-to-EC2 API proxy flow.
+**Solution:**
+```bash
+# Verify virtual environment is activated
+# Windows: venv\Scripts\activate
+# macOS/Linux: source venv/bin/activate
 
-Working through HTTPS-to-HTTP mixed-content issues.
+# Reinstall dependencies
+pip install -r requirements.txt
+```
 
-Development & Debugging
+---
 
-Troubleshooting frontend and backend integration issues.
+### Docker Issues
 
-Debugging API communication.
+#### **Problem:** Docker image build fails
 
-Reviewing implementation approaches.
+**Solution:**
+```bash
+# Check Python version
+docker run python:3.9 --version
 
-Identifying configuration issues.
+# Build with verbose output
+docker build -t instant-mechanic-api . --progress=plain
+```
 
-UI/UX
+#### **Problem:** Container exits immediately
 
-Refining Tailwind CSS utility classes.
+**Solution:**
+```bash
+# View container logs
+docker logs mechanic-api
 
-Improving dashboard layouts.
+# Run interactive shell
+docker run -it instant-mechanic-api /bin/bash
+```
 
-Improving responsive design.
+---
 
-Refining glassmorphism and dark-mode styling.
+## 🧪 Testing
 
-Improving visual hierarchy of dashboard components.
+Before deployment, verify:
 
-Documentation
+### Backend Tests
+- [ ] Flask server starts without errors
+- [ ] Database connection works
+- [ ] All API endpoints respond with correct data
+- [ ] SSE stream connects and sends events
+- [ ] Environment variables load correctly
 
-Organizing API documentation.
+### Frontend Tests
+- [ ] React app builds successfully (`npm run build`)
+- [ ] Dashboard loads without errors
+- [ ] KPI cards display correct metrics
+- [ ] Booking table shows paginated data
+- [ ] Real-time updates work (SSE connection)
+- [ ] Responsive design works on mobile
 
-Structuring Docker deployment instructions.
+### Integration Tests
+- [ ] Frontend connects to backend API
+- [ ] API proxy rewrites work in production
+- [ ] Database persists data correctly
+- [ ] Docker container runs without errors
+- [ ] EC2 deployment accessible via public IP
 
-Improving README documentation.
+### Performance Tests
+- [ ] Dashboard loads in < 2 seconds
+- [ ] API responses < 500ms
+- [ ] Real-time updates latency < 1 second
+- [ ] Mobile experience is smooth
 
-Reviewing project configuration and setup instructions.
+---
 
-AI was used as a development assistance and problem-solving tool. The project implementation, integration, testing, and deployment were performed as part of the project development process.
+## 🤖 AI Usage
 
-🧪 Testing
+AI tools (**ChatGPT**, **Gemini**) were used as development assistants:
 
-Before deployment, the application should be tested for:
+### Architecture & Planning
+- ✅ Designing frontend/backend architecture
+- ✅ Planning Vercel-to-EC2 API proxy flow
+- ✅ Solving HTTPS-to-HTTP mixed-content issues
 
-Backend API availability
+### Development & Debugging
+- ✅ Troubleshooting integration issues
+- ✅ Debugging API communication problems
+- ✅ Reviewing implementation approaches
+- ✅ Identifying configuration issues
 
-Frontend-to-backend communication
+### UI/UX Design
+- ✅ Refining Tailwind CSS utility classes
+- ✅ Improving dashboard layouts
+- ✅ Enhancing responsive design
+- ✅ Perfecting glassmorphism styling
+- ✅ Improving visual hierarchy
 
-Dashboard KPI calculations
+### Documentation
+- ✅ Organizing API documentation
+- ✅ Structuring deployment instructions
+- ✅ Improving README clarity
+- ✅ Reviewing setup instructions
 
-Booking data retrieval
+**Note:** AI was used as a development assistance tool. Project implementation, integration, testing, and deployment were performed during the development process.
 
-Pagination
+---
 
-SSE connection
+## 📋 Project Requirements Checklist
 
-Database connectivity
+- [x] Project Overview (What & Why)
+- [x] Complete Tech Stack
+- [x] Architecture Diagram & Data Flow
+- [x] Local Setup Instructions
+- [x] Environment Variables Documentation
+- [x] Comprehensive API Documentation
+- [x] Deployment Strategy (Backend & Frontend)
+- [x] Security Considerations
+- [x] AI Usage Disclosure
+- [x] Testing Guidelines
+- [x] Troubleshooting Guide
+- [x] Professional README Structure
+- [x] Quick Stats Table
+- [x] Prerequisites Section
+- [x] Table of Contents
 
-Docker container startup
+---
 
-Production API proxying
+## 🤝 Contributing
 
-Responsive dashboard behavior
+Contributions are welcome! Here's how to get started:
 
-🚀 Production Deployment Links
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Commit** changes: `git commit -m 'Add amazing feature'`
+4. **Push** to branch: `git push origin feature/amazing-feature`
+5. **Open** a Pull Request
 
-Live Frontend Dashboard (Vercel): https://<YOUR_VERCEL_APP_URL>.vercel.app
+Please ensure your code follows the existing style and includes tests.
 
-Backend REST API (AWS EC2): http://<YOUR_EC2_PUBLIC_IP>:5000/api/dashboard/overview
+---
 
-GitHub Repository: https://github.com/<YOUR_GITHUB_USERNAME>/instant-mechanic-dashboard
+## 📝 License
 
-Replace the placeholder values with your actual Vercel URL, EC2 public IP, and GitHub repository URL before submitting the project.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
-📌 Important URLs
+---
 
-Local Frontend
+## 🌐 Important URLs
 
-http://localhost:5173
+### Local Development
 
-Local Backend
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:5173 |
+| Backend | http://localhost:5000 |
+| API Base | http://localhost:5000/api |
 
-http://localhost:5000
+### Production
 
-API Base
+| Service | URL |
+|---------|-----|
+| Frontend | `https://<YOUR_VERCEL_DOMAIN>` |
+| Backend | `http://<YOUR_EC2_PUBLIC_IP>:5000` |
+| API Base | `http://<YOUR_EC2_PUBLIC_IP>:5000/api` |
 
-http://localhost:5000/api
+---
 
-Production Frontend
+## 💬 Getting Help
 
-https://<YOUR_VERCEL_DOMAIN>
+- **Issues:** [Report bugs on GitHub](https://github.com/ImTusharr/instant-mechanic-dashboard/issues)
+- **Discussions:** [Start a discussion](https://github.com/ImTusharr/instant-mechanic-dashboard/discussions)
+- **Documentation:** Check the [API Documentation](#-api-documentation) section
 
-Production Backend
+---
 
-http://<YOUR_EC2_PUBLIC_IP>:5000
+## 👨‍💻 About
 
-Replace the placeholder values with the actual deployment URLs before submitting the repository.
+**Instant Mechanic — Operations Command Center**
 
-📋 Project Requirements Checklist
+A full-stack real-time operations dashboard showcasing modern web development practices with React, Flask, SQLite, Docker, AWS EC2, and Vercel.
 
-The README includes all required sections:
+**Built with ❤️ by [ImTusharr](https://github.com/ImTusharr)**
 
-Project Overview
+---
 
-What was built
+<div align="center">
 
-Why it was built
+### ⭐ If you found this helpful, please consider giving it a star!
 
-Tech Stack
+**[⬆ Back to top](#-instant-mechanic--operations-command-center)**
 
-Frontend
-
-Backend
-
-Database
-
-Infrastructure
-
-Architecture
-
-Data Flow
-
-Local Setup
-
-Environment Variables
-
-API Documentation
-
-Deployment
-
-AI Usage
-
-👨‍💻 Project
-
-Instant Mechanic — Operations Command Center
-
-A full-stack real-time operations dashboard built using React, Flask, SQLite, Docker, AWS EC2, and Vercel.
+</div>
